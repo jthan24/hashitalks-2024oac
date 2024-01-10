@@ -90,9 +90,14 @@ terraform apply --target grafana_folder.oac_folder -auto-approve
 ```bash
 terraform apply --target grafana_dashboard.oac_dashboard -auto-approve
 ```
-## Limpiar el espacio de trabajo
+# Limpiar el espacio de trabajo
 ```bash
+# Al momento de lanzar el destroy no se podra eliminar la organizacion (Grafana no lo soporta en la version OSS)
 terraform destroy -auto-approve
+
+ctrl + c # En la ventana del grafana
+docker stop prometheus
+docker stop cadvisor 
 ```
 
 ## Creacion de la documentacion
