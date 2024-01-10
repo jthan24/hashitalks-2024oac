@@ -10,7 +10,7 @@ Necesitas:
 
 ## Instalacion de cadvisor
 ```bash
-docker run \
+docker run --name=cadvisor \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:ro \
   --volume=/sys:/sys:ro \
@@ -18,9 +18,9 @@ docker run \
   --volume=/dev/disk/:/dev/disk:ro \
   --publish=8080:8080 \
   --detach=true \
-  --name=cadvisor \
   --privileged \
   --device=/dev/kmsg \
+  --rm \
   gcr.io/cadvisor/cadvisor:latest
 ```
 
@@ -31,7 +31,11 @@ docker run \
 ## Instalacion de Prometheus 
 ```bash
 # En el archivo de prometheus-conf.yaml deben actualizar la IP con la IP_TARGET del host
-docker run --name prometheus -d -p 9090:9090 -v $(pwd)/prometheus-conf.yaml:/etc/prometheus/prometheus.yml prom/prometheus
+docker run --name prometheus \
+  -d -p 9090:9090 \
+  -v $(pwd)/prometheus-conf.yaml:/etc/prometheus/prometheus.yml \
+  --rm \
+  prom/prometheus
 ```
 
 ### Validar el acceso a Prometheus
@@ -41,12 +45,13 @@ docker run --name prometheus -d -p 9090:9090 -v $(pwd)/prometheus-conf.yaml:/etc
 
 ## Install grafana
 ```bash
-docker run -p 3000:3000 --name=grafana \
-    -e "GF_INSTALL_PLUGINS=grafana-clock-panel, grafana-simple-json-datasource" \
-    -e "GF_SECURITY_ADMIN_PASSWORD=pass" \
-    -e "GF_USERS_ALLOW_SIGN_UP=false" \
-    --rm \
-    grafana/grafana-oss
+docker run --name=grafana \
+  -p 3000:3000 \
+  -e "GF_INSTALL_PLUGINS=grafana-clock-panel, grafana-simple-json-datasource" \
+  -e "GF_SECURITY_ADMIN_PASSWORD=pass" \
+  -e "GF_USERS_ALLOW_SIGN_UP=false" \
+  --rm \
+  grafana/grafana-oss
 ```
 ### Validar el acceso a grafana 
 - http://localhost:3000
