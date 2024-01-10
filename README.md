@@ -85,6 +85,11 @@ terraform apply --target grafana_folder.oac_folder -auto-approve
 ```bash
 terraform apply --target grafana_dashboard.oac_dashboard -auto-approve
 ```
+## Limpiar el espacio de trabajo
+```bash
+terraform destroy -auto-approve
+```
+
 ## Creacion de la documentacion
 ```bash
 terraform-docs markdown table --output-file DOCUMENTACION.md .
