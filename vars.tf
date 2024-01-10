@@ -10,7 +10,7 @@ variable "organization_name" {
 }
 
 variable "target_ip" {
-  type = string
+  type        = string
   description = "Valor de la ip de destino (instalacion del grafana, en el localhost)"
-  default = "192.168.1.18"
+  default     = "192.168.1.18"
 }

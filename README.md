@@ -25,8 +25,8 @@ docker run \
 ```
 
 ### Validar el acceso a cadvisor 
-http://localhost:8080
-http://localhost:8080/metrics
+- http://localhost:8080
+- http://localhost:8080/metrics
 
 ## Instalacion de Prometheus 
 ```bash
@@ -35,47 +35,57 @@ docker run --name prometheus -d -p 9090:9090 -v $(pwd)/prometheus-conf.yaml:/etc
 ```
 
 ### Validar el acceso a Prometheus
-http://localhost:9090
-http://localhost:9090/targets
+- http://localhost:9090
+- http://localhost:9090/targets
 
 
 ## Install grafana
 ```bash
 docker run -p 3000:3000 --name=grafana \
     -e "GF_INSTALL_PLUGINS=grafana-clock-panel, grafana-simple-json-datasource" \
-    -e "GF_SECURITY_ADMIN_PASSWORD=admin" \
+    -e "GF_SECURITY_ADMIN_PASSWORD=pass" \
     -e "GF_USERS_ALLOW_SIGN_UP=false" \
     --rm \
     grafana/grafana-oss
 ```
 ### Validar el acceso a grafana 
-http://localhost:3000
+- http://localhost:3000
+```txt
 Usuario: admin
-Password: admin
+Password: pass
+```
 
 # DEMO
 
 ## Conectar terraform a grafana
 ```bash
-export TF_VAR_grafana_auth=admin:password
-```
-- Create una organizacion 
-```bash
-terraform apply --target=grafana_organization.my_org
-```
-- Add to grafana new Prometheus Data-source
-```bash
-terraform apply --target grafana_data_source.prometheus
+export TF_VAR_grafana_auth=admin:pass
 ```
 
-- Add to grafana new Folder
+## Inicializar terraform
 ```bash
-terraform apply --target grafana_folder.oac_folder
+terraform init
 ```
 
-- Add to grafana new Dashboard
+## Crear una organizacion 
 ```bash
-terraform apply --target grafana_dashboard.oac_dashboard
+terraform apply --target=grafana_organization.my_org -auto-approve
+```
+## Agregar el datasource de Prometheus a grafana
+```bash
+terraform apply --target grafana_data_source.prometheus -auto-approve
 ```
 
-- Documentation ./DOCUMENTATION.md
+## Agregar a grafana una nueva carpeta
+```bash
+terraform apply --target grafana_folder.oac_folder -auto-approve
+```
+
+## Agregar a grafana un dashboard
+```bash
+terraform apply --target grafana_dashboard.oac_dashboard -auto-approve
+```
+## Creacion de la documentacion
+```bash
+terraform-docs markdown table --output-file DOCUMENTACION.md .
+```
